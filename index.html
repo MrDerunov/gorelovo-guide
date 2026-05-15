@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Гид по Горелово</title>
+<style>
+  :root {
+    --bg: #f7f4ef; --surface: #ffffff; --text: #1e1b16; --text2: #5c564c;
+    --accent: #2e7d32; --accent2: #43a047; --border: #e0dbd0;
+    --shadow: 0 2px 16px rgba(0,0,0,.06); --card-hover: 0 8px 32px rgba(0,0,0,.1);
+    --hero-bg: linear-gradient(135deg, #1b3a1b 0%, #2d5a2d 40%, #3e7a3e 70%, #4caf50 100%);
+    --tag-bg: #e8f5e9; --tag-text: #2e7d32;
+  }
+  [data-theme="dark"] {
+    --bg: #151310; --surface: #1f1c18; --text: #e8e0d0; --text2: #a89c80;
+    --accent: #66bb6a; --accent2: #81c784; --border: #3a3328;
+    --shadow: 0 2px 16px rgba(0,0,0,.25); --card-hover: 0 8px 32px rgba(0,0,0,.4);
+    --hero-bg: linear-gradient(135deg, #0a1a0a 0%, #122512 40%, #1b3a1b 100%);
+    --tag-bg: #1b3a1b; --tag-text: #81c784;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;transition:background .3s,color .3s}
+  .hero{background:var(--hero-bg);color:#fff;padding:48px 20px 40px;text-align:center;position:relative;overflow:hidden}
+  .hero::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:40px;background:var(--bg);border-radius:40px 40px 0 0}
+  .hero .emoji{font-size:56px;margin-bottom:8px}
+  .hero h1{font-size:clamp(24px,5vw,40px);font-weight:700;letter-spacing:-.5px}
+  .hero p{font-size:16px;opacity:.85;max-width:550px;margin:8px auto 0}
+  .theme-toggle{position:absolute;top:16px;right:16px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;width:40px;height:40px;border-radius:20px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:background .2s;z-index:2}
+  .theme-toggle:hover{background:rgba(255,255,255,.25)}
+  .container{max-width:720px;margin:-20px auto 0;padding:0 16px 60px;position:relative;z-index:1}
+  .search-wrap{margin-bottom:20px;position:relative}
+  .search-input{width:100%;padding:14px 18px 14px 44px;border:2px solid var(--border);border-radius:16px;background:var(--surface);color:var(--text);font-size:16px;outline:none;transition:border-color .2s;box-shadow:var(--shadow)}
+  .search-input:focus{border-color:var(--accent)}
+  .search-wrap::before{content:'🔍';position:absolute;left:14px;top:14px;font-size:16px;z-index:1}
+  .search-input::placeholder{color:var(--text2)}
+  .grid{display:flex;flex-direction:column;gap:14px}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:var(--shadow);cursor:pointer;transition:transform .2s,box-shadow .2s}
+  .card:hover{transform:translateY(-2px);box-shadow:var(--card-hover)}
+  .card.active{border-color:var(--accent)}
+  .card-header{display:flex;align-items:center;gap:14px;padding:18px 20px}
+  .card-num{width:44px;height:44px;border-radius:14px;background:var(--tag-bg);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+  .card-title-wrap{flex:1;min-width:0}
+  .card-title{font-size:17px;font-weight:600;color:var(--text);line-height:1.3}
+  .card-subtitle{font-size:13px;color:var(--text2);margin-top:2px}
+  .card-arrow{color:var(--text2);font-size:14px;transition:transform .3s;flex-shrink:0}
+  .card.active .card-arrow{transform:rotate(90deg)}
+  .card-body{display:none;padding:0 20px 20px;border-top:1px solid var(--border);padding-top:16px}
+  .card.active .card-body{display:block}
+  .card-body p{font-size:15px;color:var(--text);margin-bottom:12px;line-height:1.7}
+  .card-images{display:flex;gap:10px;overflow-x:auto;margin:12px 0;padding-bottom:4px;scroll-snap-type:x mandatory}
+  .card-images img{width:200px;height:140px;object-fit:cover;border-radius:12px;flex-shrink:0;scroll-snap-align:start;border:1px solid var(--border)}
+  .audio-wrap{margin:12px 0}
+  .audio-wrap audio{width:100%;height:40px;border-radius:12px}
+  .links-list{margin-top:10px}
+  .links-list a{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;margin:4px 4px 4px 0;background:var(--tag-bg);color:var(--tag-text);border-radius:10px;text-decoration:none;font-size:13px;font-weight:500}
+  .links-list a:hover{filter:brightness(.95)}
+  .facts{margin-top:8px}
+  .fact{background:var(--tag-bg);border-radius:10px;padding:10px 14px;margin-bottom:6px;font-size:14px;color:var(--text)}
+  .fact::before{content:'💡 '}
+  .footer{text-align:center;padding:30px 20px;color:var(--text2);font-size:13px}
+  .footer a{color:var(--accent);text-decoration:none}
+  .empty-search{text-align:center;padding:40px 20px;color:var(--text2)}
+  @media(min-width:600px){.card-images img{width:260px;height:170px}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <button class="theme-toggle" onclick="toggleTheme()" title="Тёмный/светлый режим" aria-label="Сменить тему">🌓</button>
+  <div class="emoji">🌲</div>
+  <h1>Гид по Горелово</h1>
+  <p>История района Санкт-Петербурга — от финских хуторов до «родины Лунохода»</p>
+</header>
+
+<div class="container">
+  <div class="search-wrap">
+    <input type="text" class="search-input" placeholder="Найти тему..." oninput="filterCards(this.value)">
+  </div>
+  <div class="grid" id="grid"></div>
+</div>
+
+<div class="footer">
+  Горелово, Красносельский район Санкт-Петербурга · <a href="https://mogorelovo.ru" target="_blank">mogorelovo.ru</a>
+</div>
+
+<script>
+const topics = [
+  {
+    id:1,emoji:"🔥",title:"«Горелое место»",
+    subtitle:"Откуда взялось название",
+    text:`<p><strong>Горелово</strong> — название с петровских времён. Когда строили Петербург на болотах, понадобились тысячи сосновых свай для фундаментов. Леса вокруг будущего Горелова вырубали — стволы везли в город, а ветви и хворост <strong>сжигали прямо на месте</strong>. Оставалась выжженная, «горелая» земля — отсюда и имя.</p>
+    <p>В 1721 году от деревни Горелово начали прокладывать <strong>Лиговский канал</strong> для питания фонтанов Летнего сада — деревня оказалась в исходной точке одного из первых инженерных проектов города. У района было и финское имя — <strong>Ароппакузи</strong>, наследие ингерманландского прошлого.</p>`,
+    facts:["Название — от выжженных лесов петровской эпохи","Финское название: Ароппакузи (Aropakkuzi)","1721 — начало Лиговского канала от деревни Горелово"],
+    links:[{label:"История МО Горелово",url:"https://mogorelovo.ru/content/svedeniya-o-mo-gorelovo/istoriya-mo-gorelovo/gorelovo-i-ego-okrestnosti-kraevedcheskiy-sbornik/chast-2/"}],
+    images:[]
+  },
+  {
+    id:2,emoji:"🏘️",title:"Финские деревни и русские крестьяне",
+    subtitle:"Кто жил здесь до Петербурга",
+    text:`<p>Задолго до Петра эти земли входили в <strong>Водскую пятину</strong> Новгородской республики. В писцовых книгах XV века упоминаются окрестные селения: <strong>Торики, Лигово, Дудорово</strong>. В XVII веке, при шведах, вдоль Нарвского тракта появились финские хутора.</p>
+    <p>После Северной войны Пётр I переселял сюда русских крестьян. Возникли деревни Горелово, Сосновка, Константиновка. В 1765 году Екатерина II пожаловала эти земли графу <strong>Григорию Орлову</strong>, который устроил образцовую усадьбу с садами и фермами. Позже имение перешло к графу <strong>Буксгевдену</strong> — военному губернатору Петербурга.</p>`,
+    facts:["XV век: деревни Торики, Лигово в новгородских книгах","XVII век: шведские финские хутора","1765: Екатерина II дарит земли Григорию Орлову"],
+    links:[{label:"Wikipedia (ист. район)",url:"https://ru.wikipedia.org/wiki/Горелово_(исторический_район)"}],
+    images:[]
+  },
+  {
+    id:3,emoji:"🎖️",title:"Гвардейцы в полях Горелова",
+    subtitle:"Артиллерийские лагеря и военное прошлое",
+    text:`<p>С 1760-х годов до начала XX века земли Горелова входили в зону <strong>Красносельских военных лагерей</strong> — места летних сборов гвардейских полков. Здесь проходили масштабные учения, манёвры и учебные стрельбы. Присутствие армии давало местным крестьянам стабильный заработок.</p>
+    <p>Крестьяне Горелова были <strong>государственными</strong> — не крепостными. Занимались земледелием, животноводством, подрабатывали на Красносельской бумажной мануфактуре и извозом в Петербурге. В XIX веке через Горелово прошли ключевые дороги: Нарвский тракт и Волхонское шоссе.</p>`,
+    facts:["1760–1910-е: артиллерийское учебное поле","Крестьяне — государственные, не крепостные","Нарвский тракт + Волхонское шоссе"],
+    links:[],
+    images:[]
+  },
+  {
+    id:4,emoji:"🚂",title:"Вокзал-памятник",
+    subtitle:"Железнодорожная станция 1912 года",
+    text:`<p>Станция Горелово открылась в <strong>1897–1898 годах</strong> на Балтийской линии. Но главная архитектурная драгоценность — <strong>вокзал 1912 года</strong>: одноэтажное кирпичное здание в стиле модерн, единственное сохранившееся дореволюционное здание Горелова.</p>
+    <p>В 2020 году вокзал признан <strong>объектом культурного наследия регионального значения</strong>. Это живое свидетельство того, как железная дорога превращала тихую деревню в развивающийся дачный пригород Петербурга.</p>`,
+    facts:["Станция открыта в 1897–1898","Вокзал построен в 1912, стиль модерн","Объект культурного наследия с 2020 года"],
+    links:[{label:"Вокзал на Citywalls",url:"https://www.citywalls.ru/house12393.html"}],
+    images:["https://upload.wikimedia.org/wikipedia/commons/8/87/Gorelovo_railway_station_-_name.JPG"]
+  },
+  {
+    id:5,emoji:"✈️",title:"Небо над Горелово",
+    subtitle:"Аэродром, война и лётчики-герои",
+    text:`<p>В 1935 году на месте деревни Торики начали строить <strong>военный аэродром</strong>. К 1939 году были готовы бетонная полоса, ангары и жилой городок. Здесь базировался <strong>19-й Краснознамённый истребительный авиаполк</strong>, сражавшийся в финскую войну — 3412 боевых вылетов.</p>
+    <p>В сентябре 1941 года Горелово захватили немецкие войска. Весь период блокады аэродром был в оккупации, превращён в позицию дальнобойной артиллерии. В феврале 1944-го советские лётчики вернулись. Сегодня на части аэродрома — <strong>«кладбище военных вертолётов»</strong>, неформальный музей под открытым небом.</p>`,
+    facts:["Аэродром построен в 1935–1939","19-й Краснознамённый ИАП: 3412 вылетов","Оккупация 1941–1944, освобождён в феврале 1944"],
+    links:[{label:"Кладбище вертолётов",url:"https://yandex.ru/maps/org/kladbishche_voyennykh_vertolyotov/5975298257/"}],
+    images:["https://upload.wikimedia.org/wikipedia/commons/1/12/Gorelovo_airfield_at_Saint-Petersburg%2C_Russia.jpg"]
+  },
+  {
+    id:6,emoji:"🚀",title:"Родина «Лунохода»",
+    subtitle:"Секретный институт ВНИИТрансмаш",
+    text:`<p>В 1962 году в Горелово перевели <strong>ВНИИТрансмаш</strong> — ведущий оборонный НИИ страны. В обстановке строгой секретности здесь создавали ходовую часть <strong>советских планетоходов</strong>. Было изготовлено около 30 макетов с разными схемами движителей. Испытания проходили на полигоне с «Танковыми озёрами».</p>
+    <p>Опыт создания лунохода позже применили при разработке роботов для ликвидации аварии на <strong>Чернобыльской АЭС</strong> в 1986 году. Институт работает до сих пор.</p>`,
+    facts:["ВНИИТрансмаш переведён в Горелово в 1962","~30 макетов планетоходов испытано","Технологии использованы в Чернобыле (1986)"],
+    links:[{label:"Видео: Горелово и Луноход",url:"https://www.youtube.com/watch?v=s1ZkQNjmBuM"}],
+    images:[]
+  },
+  {
+    id:7,emoji:"📖",title:"Горелово литературное",
+    subtitle:"Некрасов, Булгаков и утраченные имена",
+    text:`<p>Название «Горелово» вошло в русскую литературу благодаря <strong>Некрасову</strong>. В поэме «Кому на Руси жить хорошо» (1866) он перечисляет «говорящие» деревни: «Заплатова, Дыряева, Разутова, Знобишина, <strong>Горелова, Неелова</strong> — Неурожайка тож...»</p>
+    <p>Есть и связь с <strong>Булгаковым</strong>: в рассказе «Морфий» доктор Бомгард служит в Гореловской больнице. Впрочем, исследователи спорят — то ли это реальное Горелово, то ли обобщённый образ провинциальной глуши.</p>`,
+    facts:["Некрасов: «Горелова, Неелова — Неурожайка тож»","Булгаков: доктор Бомгард из «Морфия» работает в Горелове","Спор литературоведов: реальное Горелово или вымысел?"],
+    links:[{label:"Некрасов: кому на Руси",url:"https://ru.wikisource.org/wiki/Кому_на_Руси_жить_хорошо_(Некрасов)"}],
+    images:[]
+  },
+  {
+    id:8,emoji:"🛕",title:"Храмы Горелова",
+    subtitle:"От православия до буддизма",
+    text:`<p>Религиозная карта района удивительно разнообразна. В Старо-Паново стоит <strong>храм святых Адриана и Наталии</strong> — белоснежная церковь в древнерусском стиле, построенная как памятник пропавшим без вести защитникам Ленинграда. При ней — музей воинской славы и Книга памяти.</p>
+    <p>В Горелово также находятся: храм преподобного <strong>Алексия, человека Божия</strong> (ул. Коммунаров), деревянный храм <strong>царицы Александры</strong> в Сосновке, и — неожиданно — <strong>буддийский храм Буддавихара</strong> (2006), единственный в окрестностях Петербурга.</p>`,
+    facts:["Храм Адриана и Наталии — памятник защитникам Ленинграда","Буддавихара (2006) — буддийский храм в Горелово","До революции: храм Серафима Саровского (утрачен)"],
+    links:[{label:"Буддавихара",url:"https://www.buddhavihara.ru"},{label:"Храм Алексия",url:"https://hramalexia.ru"}],
+    images:["https://upload.wikimedia.org/wikipedia/commons/a/a0/Buddavihara.JPG"]
+  },
+  {
+    id:9,emoji:"🏡",title:"Горелово сегодня",
+    subtitle:"Современный район Петербурга",
+    text:`<p>Сегодня Горелово — <strong>муниципальный округ № 43</strong> в Красносельском районе, около 30 000 жителей. Частный сектор соседствует с многоэтажками, работают школы, амбулатории, библиотеки. Железнодорожная станция связывает с центром города.</p>
+    <p>В последние годы благоустроили сквер у пруда с амфитеатром, обустроили пляж на Гореловском озере, появился бульвар в «Новом Горелово». Экология радует: река Дудергофка, лесные массивы и близость к Финскому заливу.</p>`,
+    facts:["МО Горелово: ~29 000 жителей","Станция Горелово + автобусы","Сквер с амфитеатром, пляж, «Новое Горелово»"],
+    links:[{label:"mogorelovo.ru",url:"https://mogorelovo.ru"},{label:"Видео о Горелово",url:"https://www.youtube.com/watch?v=s1ZkQNjmBuM"},{label:"Яндекс.Карты",url:"https://yandex.ru/maps/2/saint-petersburg/geo/munitsipalny_okrug_gorelovo/53211782/"}],
+    images:["https://upload.wikimedia.org/wikipedia/commons/b/bd/Gorelovo_area_%28Saint_Petersburg%29_18Jun10.JPG"]
+  }
+];
+
+function renderCards(data){
+  const grid=document.getElementById('grid');
+  if(!data.length){grid.innerHTML='<div class="empty-search">Ничего не найдено 😔</div>';return}
+  grid.innerHTML=data.map(t=>`<div class="card" id="card-${t.id}" data-id="${t.id}">
+    <div class="card-header" onclick="toggleCard(${t.id})">
+      <div class="card-num">${t.emoji}</div>
+      <div class="card-title-wrap"><div class="card-title">${t.title}</div><div class="card-subtitle">${t.subtitle}</div></div>
+      <div class="card-arrow">▶</div>
+    </div>
+    <div class="card-body">
+      ${t.text}
+      <div class="audio-wrap"><audio controls preload="none" src="audio/topic-${String(t.id).padStart(2,'0')}.mp3"></audio></div>
+      ${t.images.length?`<div class="card-images">${t.images.map(u=>`<img src="${u}" alt="${t.title}" loading="lazy" onerror="this.parentElement.removeChild(this)">`).join('')}</div>`:''}
+      ${t.facts.length?`<div class="facts">${t.facts.map(f=>`<div class="fact">${f}</div>`).join('')}</div>`:''}
+      ${t.links.length?`<div class="links-list">${t.links.map(l=>`<a href="${l.url}" target="_blank">🔗 ${l.label}</a>`).join('')}</div>`:''}
+    </div>
+  </div>`).join('')
+}
+
+function toggleCard(id){document.getElementById('card-'+id).classList.toggle('active')}
+function filterCards(q){
+  const term=q.toLowerCase().trim();
+  document.querySelectorAll('.card').forEach(c=>{
+    const t=topics.find(t=>t.id===parseInt(c.dataset.id));
+    if(!term){c.style.display='';return}
+    c.style.display=(t.title+t.text+t.subtitle).toLowerCase().includes(term)?'':'none'
+  })
+}
+function toggleTheme(){
+  const html=document.documentElement;
+  const n=html.getAttribute('data-theme')==='light'?'dark':'light';
+  html.setAttribute('data-theme',n);localStorage.setItem('gorelovo-theme',n)
+}
+(function(){
+  const s=localStorage.getItem('gorelovo-theme');
+  if(s)document.documentElement.setAttribute('data-theme',s);
+  renderCards(topics)
+})()
+</script>
+</body>
+</html>
